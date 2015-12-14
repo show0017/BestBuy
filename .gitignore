@@ -2,3 +2,5 @@ platforms
 hooks
 plugins
 www/lib
+node_modules
+bower_components

@@ -21,3 +21,22 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+.align-left{
+	margin-left: 20px;
+}
+
+.align-right{
+	margin-right: 20px;
+}
+
+.has-error{
+	color: red;
+}
+
+.feedback-error{
+	background-color: #F6CECE !important;
+}
+
+.feedback-success{
+	background-color: #D0F5A9 !important;
+}

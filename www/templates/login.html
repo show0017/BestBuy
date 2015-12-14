@@ -1,0 +1,32 @@
+<ion-view view-title="Login">
+<ion-content class="align-left align-right">
+	
+	<h3>Sign-in Using</h3>
+
+	<button class="button button-positive">Facebook</button>
+
+	<hr>
+
+	<div class="has-error" ng-show="error.isActive">
+	  <p>{{ error.usernameMsg}}</p>
+	  <p>{{ error.passwordMsg}}</p>
+	</div>
+	<form name="loginForm" class="list" ng-submit="onLogin()">
+	  <label class="item item-input" ng-class="usernameFeedbackType">
+	    <input 	type="text" 
+	    				placeholder="username" 
+	    				ng-model="user.name" 
+	    				ng-change="verifyUsername()">
+	  </label>
+	  <label class="item item-input" ng-class="passwordFeedbackType">
+	    <input 	type="password" 
+	    				placeholder="password" 
+	    				ng-model="user.password" 
+	    				ng-change="verifyPassword()">
+	  </label>
+
+	  <button class="button button-block button-royal" ng-disabled="isInvalidForm">Sign-in</button>
+	</form>
+
+</ion-content>
+</ion-view>
