@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('LoginCtrl', ['$scope', function($scope){
+.controller('LoginCtrl', ['$scope', '$cordovaOauth','$http','$ionicPopup','$state',function($scope, $cordovaOauth, $http, $ionicPopup, $state){
     $scope.user = 
     {
       'name':"",
@@ -59,6 +59,34 @@ angular.module('starter.controllers', [])
       }
       
              
+    };
+
+    $scope.facebookLogin = function() {
+      console.log("inside facebookLogin");
+      $cordovaOauth.facebook("182455115434881", ["email"])
+      .then(function(result) {
+        console.log(JSON.stringify(result));
+
+        $http.get("https://graph.facebook.com/v2.5/me", 
+        { params: { access_token: result.access_token, fields: "id,name,gender,location,website,picture,relationship_status", format: "json" }}).then(function(result) {
+        $ionicPopup.alert({
+        title: 'Success',
+        content: 'You have successfully logged in!' + JSON.stringify(result.data)
+        }).then(function(){
+          $state.go('tab.dash');
+        })
+        }, function(error) {
+          alert("There was a problem getting your profile. Check the logs for details.");
+          console.log(error);
+          
+        });
+      })
+      .catch(function(response) {
+        $ionicPopup.alert({
+        title: 'Error',
+        content: response.data ? response.data || response.data.message : response
+        })
+      });  
     };
 }])
 
