@@ -4,14 +4,16 @@ angular.module('BestBuy')
 
   var API_KEY = "e47jhn2cbpaehzqf7n8jdazc";
 
-  var SEARCH_GEO_PREFIX  = "http://api.bestbuy.com/v1/stores(area(";
-  var SEARCH_CITY_PREFIX = "http://api.bestbuy.com/v1/stores(city=";
+  var SEARCH_PREFIX  = "http://api.bestbuy.com/v1/stores(";
+  // var SEARCH_CITY_PREFIX = "http://api.bestbuy.com/v1/stores(city=";
 
   var SEARCH_PREFIX;
   var SEARCH_POSTFIX;
 
-  var SEARCH_GEO_POSTFIX = "))?format=json&show=storeId,name,detailedHours,phone,address&apiKey="+ API_KEY;
-  var SEARCH_CITY_POSTFIX= ")?format=json&show=storeId,name,detailedHours,phone,address&apiKey="+ API_KEY; 
+  var SEARCH_POSTFIX =     ")?format=json&show=storeId,name,detailedHours,phone,address&apiKey="+ API_KEY;
+  // var SEARCH_CITY_POSTFIX= ")?format=json&show=storeId,name,detailedHours,phone,address&apiKey="+ API_KEY; 
+
+  var CURRENT_SEARCH_QUERY;
 
   var PAGE_QUERY     = "&page=";
 
@@ -33,42 +35,47 @@ angular.module('BestBuy')
     },
 
     getItemsAtPage: function(pageNum, successCallback, errorCallback) {
-      $http.get(SEARCH_PREFIX+currentCity+SEARCH_POSTFIX+PAGE_QUERY+pageNum).then(successCallback, errorCallback);  
+      $http.get(CURRENT_SEARCH_QUERY+PAGE_QUERY+pageNum).then(successCallback, errorCallback);  
     },
 
     searchByCity: function(query, successCallback, errorCallback){
       currentCity = query;
       
-      SEARCH_PREFIX  = SEARCH_CITY_PREFIX;
-      SEARCH_POSTFIX = SEARCH_CITY_POSTFIX;
-      
-      $http.get(SEARCH_PREFIX+currentCity+SEARCH_POSTFIX).then(successCallback, errorCallback);      
+
+      CURRENT_SEARCH_QUERY = SEARCH_PREFIX +
+                                "city="+
+                                currentCity+
+                                SEARCH_POSTFIX;
+
+      $http.get(CURRENT_SEARCH_QUERY).then(successCallback, errorCallback);      
     },
 
     getClosestByGeoLocation: function(successCallback, errorCallback, minimumDistance){
-      location.minimumDistance = minimumDistance? minimumDistance: 10;
+      location.minimumDistance = minimumDistance? minimumDistance: 10;      
 
-      SEARCH_PREFIX  = SEARCH_GEO_PREFIX;
-      SEARCH_POSTFIX = SEARCH_GEO_POSTFIX;      
+      CURRENT_SEARCH_QUERY = SEARCH_PREFIX +
+                                "area("+
+                                location.lat + "," +
+                                location.lng + "," +
+                                location.minimumDistance +
+                                ")"+
+                                SEARCH_POSTFIX;
 
-      $http.get(SEARCH_PREFIX +
-                  location.lat + "," +
-                  location.lng + "," +
-                  location.minimumDistance +
-                  SEARCH_POSTFIX).then(successCallback, errorCallback);      
+      $http.get().then(successCallback, errorCallback);      
     },
 
     getClosestByZipcode: function(successCallback, errorCallback, zipcode){
 
       location.zipcode = zipcode? zipcode: 55423;
 
-      SEARCH_PREFIX  = SEARCH_GEO_PREFIX;
-      SEARCH_POSTFIX = SEARCH_GEO_POSTFIX;      
+      CURRENT_SEARCH_QUERY = SEARCH_PREFIX +
+                                "area("+
+                                location.zipcode + "," +
+                                location.minimumDistance +
+                                ")"+
+                                SEARCH_POSTFIX;
 
-      $http.get(SEARCH_PREFIX +
-                  location.zipcode + "," +
-                  location.minimumDistance +
-                  SEARCH_POSTFIX).then(successCallback, errorCallback);      
+      $http.get(CURRENT_SEARCH_QUERY).then(successCallback, errorCallback);      
     },
 
     setStores: function(stores){

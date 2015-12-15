@@ -24,8 +24,10 @@ angular.module('BestBuy')
 
     /* Update results object.*/
     results.numOfPages = response.data.totalPages;
-    results.numOfProducts = response.data.total;
+    results.numOfStores = response.data.total;
     results.currentPage = response.data.currentPage;
+
+    $scope.$broadcast('scroll.infiniteScrollComplete');
   };
 
   var errorCallback = function(response){
@@ -43,7 +45,7 @@ angular.module('BestBuy')
   };
 
   var results = {
-      numOfProducts : 0,
+      numOfStores : 0,
       numOfPages    : 0,
       currentPage   : 0,
       numOfItemsPerPage: 10
@@ -62,5 +64,12 @@ angular.module('BestBuy')
     }
   };
   
+  $scope.moreStoresCanBeLoaded = function(){
+  	return results.currentPage < results.numOfPages;
+  };
 
+  $scope.loadMoreStores = function(){
+  	console.log("Load More Data");
+  	StoreFinderAPI.getItemsAtPage(results.currentPage+1, successCallback, errorCallback);
+  };
 }]);
