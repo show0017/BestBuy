@@ -1,0 +1,27 @@
+<ion-view view-title="Store Finder">
+  <ion-content class="padding">
+    <form class='bar item-input-inset bar-light'>
+      <label class="item-input-wrapper">
+          <i class="icon ion-search placeholder-icon"></i>
+          <input type="search" placeholder="Enter City Name" ng-model="search.query">
+      </label>
+      <button class="button button-positive button-clear" ng-click="searchUserInput()">Search</button>
+    </form>
+
+    
+    <ion-list>
+      <ion-item ng-repeat="store in search.stores" href="#/tab/store/{{store.storeId}}">
+        <h2>{{ store.name }}</h2>
+        <p><i class="icon ion-navigate"></i> {{ store.address }}</p>
+      </ion-item>
+    </ion-list>
+
+    <ion-infinite-scroll
+      ng-if="moreDataCanBeLoaded()"
+      distance="1%"
+      icon="ion-loading-c"
+      on-infinite="loadMoreData()">
+    </ion-infinite-scroll>
+
+    </ion-content>
+</ion-view>

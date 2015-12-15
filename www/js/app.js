@@ -49,24 +49,25 @@ angular.module('BestBuy', ['ionic','ngCordova'])
     }
   })
 
-  .state('tab.chats', {
-      url: '/chats',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
-        }
+  .state('tab.store-finder', {
+    url: '/store-finder',
+    views: {
+      'tab-store-finder': {
+        templateUrl: 'templates/tab-store-finder.html',
+        controller: 'StoreFinderCtrl'
       }
-    })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
+    }
+  })
+
+  .state('tab.store-details', {
+    url: '/store/:storeId',
+    views: {
+      'tab-store-finder': {
+        templateUrl: 'templates/store-details.html',
+        controller: 'StoreDetailsCtrl'
       }
-    })
+    }
+  })
 
   .state('tab.account', {
     url: '/account',

@@ -1,0 +1,26 @@
+<ion-view view-title="Store Info">
+  <ion-content class="padding">
+    <div class="card">
+      <div class="item item-divider">{{ store.name }}</div>
+      <div class="item item-text-wrap">
+        <h3><i class="icon ion-navigate"></i> {{ store.address }}</h3>
+        <br>
+        <h3><i class="icon ion-ios-clock"></i> Store Hours</h3>
+        <div ng-repeat="timingInfo in store.detailedHours | limitTo: 7 ">
+
+          <p ng-if="timingInfo.open != null && timingInfo.close != null">
+            <span>{{ timingInfo.day }}</span>
+            <span>{{ timingInfo.open }}</span>
+            <span><strong> - </strong></span>
+            <span>{{ timingInfo.close }}</span>
+          </p>
+          <p ng-if="!timingInfo.open || !timingInfo.close">
+            <span class="assertive">{{ timingInfo.day }}</span>
+            <span class="assertive">Closed</span>
+          </p>          
+        </div>
+      </div>
+      <div class="item item-divider"><span class="ion ion-ios-telephone"></span> {{ store.phone }}</div>
+    </div>
+  </ion-content>
+</ion-view>
