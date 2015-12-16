@@ -9,7 +9,7 @@ angular.module('BestBuy', ['ionic','ngCordova'])
   });
 
   $rootScope.$on('$stateChangeStart', function (event, target) {
-    
+
     if((target.name != "login") && (!$rootScope.isAuthenticated)){
       event.preventDefault();
       $state.go("login");
@@ -92,6 +92,16 @@ angular.module('BestBuy', ['ionic','ngCordova'])
       'tab-logs': {
         templateUrl: 'templates/tab-logs.html',
         controller: 'LogsCtrl'
+      }
+    }
+  })
+
+  .state('tab.account', {
+    url: '/account',
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/tab-account.html',
+        controller: 'AccountCtrl'
       }
     }
   });
