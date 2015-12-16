@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "ngCordova": "~0.1.23-alpha",
-    "stacktrace-js": "~1.0.1"
+    "stacktrace-js": "~1.0.1",
+    "angular-local-storage": "~0.2.3"
   }
 }

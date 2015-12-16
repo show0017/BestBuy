@@ -40,3 +40,20 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .feedback-success{
 	background-color: #D0F5A9 !important;
 }
+
+.top-buffer{
+	margin-top: 200px;
+}
+
+.fixed-panel{
+	  background-color: #26acd9;
+    position: absolute;
+    z-index: 2;
+    margin-top: $bar-height;
+    padding-left: 25px;
+    padding-top : 20px; 
+    height: 30%;
+    width: 100%;
+    margin-left: -5px;
+    overflow-y: auto;   
+}

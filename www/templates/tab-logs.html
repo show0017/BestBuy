@@ -1,0 +1,23 @@
+<ion-view view-title="Logger Information">
+
+<div class="row">
+<div class=".col">
+	<div class="fixed-panel">		
+		<h3>Call Stack</h3>
+		<ul>
+			<li ng-repeat="frame in stackframes track by $index">
+				<p>{{ frame }}</p>
+			</li>
+		</li>
+	</div>
+</div>
+</div>	
+	<ion-content class="top-buffer">
+		<ion-list>
+			<ion-item ng-repeat="logInfo in messages" ng-click="displayCallStack($index)">
+				<h2>{{ logInfo.msg }}</h2>
+				<p class="positive">{{ logInfo.time }}</p>
+			</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-view>
