@@ -3,9 +3,17 @@ angular.module('BestBuy', ['ionic','ngCordova'])
 .run(['$ionicPlatform','$rootScope', '$state', function($ionicPlatform, $rootScope, $state) {
 
    $rootScope.$on('event-login-success', function(event,username) {
-    console.log("inside event success handler");
+    $rootScope.isAuthenticated = true;
     $rootScope.username = username;
     $state.go("tab.search");
+  });
+
+  $rootScope.$on('$stateChangeStart', function (event, target) {
+    
+    if((target.name != "login") && (!$rootScope.isAuthenticated)){
+      event.preventDefault();
+      $state.go("login");
+    }
   });
 
   $ionicPlatform.ready(function() {
