@@ -77,7 +77,7 @@ angular.module('BestBuy')
         title: 'Success',
         content: 'You have successfully logged in!' + JSON.stringify(result.data)
         }).then(function(){
-          $state.go('tab.dash');
+          $scope.$emit("event-login-success",result.data.name);
         })
         }, function(error) {
           alert("There was a problem getting your profile. Check the logs for details.");
