@@ -1,6 +1,6 @@
 angular.module('BestBuy')
 
-.controller('LoginCtrl', ['$scope', '$cordovaOauth','$http','$ionicPopup','$state',function($scope, $cordovaOauth, $http, $ionicPopup, $state){
+.controller('LoginCtrl', ['$scope', '$cordovaOauth','$http','$ionicPopup','$state','$log',function($scope, $cordovaOauth, $http, $ionicPopup, $state, $log){
     $scope.user = 
     {
       'name':"",
@@ -28,6 +28,7 @@ angular.module('BestBuy')
         $scope.error.usernameMsg = "Invalid username";
         $scope.usernameFeedbackType = "feedback-error";
         $scope.isInvalidForm = true;
+        $log.error("Invalid username:" + $scope.user.name);
       }else{
         
         $scope.error.isActive = false;
@@ -48,6 +49,7 @@ angular.module('BestBuy')
         $scope.error.passwordMsg = "password lenght must be @ least 5 characters";
         $scope.passwordFeedbackType = "feedback-error";
         $scope.isInvalidForm = true;
+        $log.error("Invalid password:" + $scope.user.password);
       }else{
         $scope.error.isActive = false;
         $scope.error.passwordMsg = "";

@@ -1,6 +1,6 @@
 angular.module('BestBuy', ['ionic','ngCordova'])
 
-.run(function($ionicPlatform) {
+.run(['$ionicPlatform',function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -14,9 +14,42 @@ angular.module('BestBuy', ['ionic','ngCordova'])
       StatusBar.styleDefault();
     }
   });
-})
+}])
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(['$stateProvider','$urlRouterProvider','$provide',function($stateProvider, $urlRouterProvider, $provide) {
+
+$provide.decorator( '$log', [ "$delegate", function( $delegate )
+{
+    // Save the original $log.error()
+    var errorFn = $delegate.error;
+
+    $delegate.error = function( )
+    {
+      // /* Get the arguments of $log.error. Also Get the current date. */
+      var args    = [].slice.call(arguments);
+
+      // Prepend timestamp
+      args[0] = [new Date().toString(), ': ', args[0]].join('');
+
+      var callback = function(stackframes) {
+        var stringifiedStack = stackframes.map(function(sf) {
+          return sf.toString();
+        }).join('\n');
+        //console.log(stringifiedStack);
+        args[0] = [ args[0], stringifiedStack ].join('\n**************************************\n');
+        console.log(args[0]);
+      };
+
+      var errback = function(err) { };
+
+      StackTrace.get().then(callback).catch(errback);
+      
+      // Call the original with the output prepended with formatted timestamp
+      errorFn.apply(null, args)
+    };
+
+    return $delegate;
+}]);
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -82,4 +115,4 @@ angular.module('BestBuy', ['ionic','ngCordova'])
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
 
-});
+}]);
