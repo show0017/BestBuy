@@ -1,6 +1,7 @@
 angular.module('BestBuy')
 
-.controller('LoginCtrl', ['$scope', '$cordovaOauth','$http','$ionicPopup','$state','$log',function($scope, $cordovaOauth, $http, $ionicPopup, $state, $log){
+.controller('LoginCtrl', ['$scope', '$cordovaOauth','$http','$ionicPopup','$state','$log','$rootScope',
+  function($scope, $cordovaOauth, $http, $ionicPopup, $state, $log, $rootScope){
     $scope.user = 
     {
       'name':"",
@@ -16,7 +17,8 @@ angular.module('BestBuy')
 
     $scope.isInvalidForm = true;
     $scope.onLogin = function(){
-      $state.go('tab.search');
+      console.log("broadcast event");
+      $scope.$emit("event-login-success",$scope.user.name);
     };
 
     $scope.verifyUsername = function(){

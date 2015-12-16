@@ -1,6 +1,13 @@
 angular.module('BestBuy', ['ionic','ngCordova'])
 
-.run(['$ionicPlatform',function($ionicPlatform) {
+.run(['$ionicPlatform','$rootScope', '$state', function($ionicPlatform, $rootScope, $state) {
+
+   $rootScope.$on('event-login-success', function(event,username) {
+    console.log("inside event success handler");
+    $rootScope.username = username;
+    $state.go("tab.search");
+  });
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
