@@ -1,6 +1,6 @@
 angular.module('BestBuy')
 
-.controller('StoreFinderCtrl', ['$scope','$cordovaGeolocation','StoreFinderAPI',function($scope, $cordovaGeolocation, StoreFinderAPI) {
+.controller('StoreFinderCtrl', ['$scope','$cordovaGeolocation','StoreFinderAPI','$ionicPopup',function($scope, $cordovaGeolocation, StoreFinderAPI, $ionicPopup) {
 
 	/* Get user's current location. */
 	var posOptions = {timeout: 10000, enableHighAccuracy: false};
@@ -9,12 +9,17 @@ angular.module('BestBuy')
     .then(function (position) {
     	console.log("User's currrent location is obtained successfully");
       StoreFinderAPI.setCurrentLocation(position.coords.latitude, position.coords.longitude);
+      /* Use maximum value of radius to get US stores with respect to Ottawa location. */
+      StoreFinderAPI.getClosestByGeoLocation(successCallback, errorCallback, 2147483647);
     }, function(err) {
-      /* TODO: Log error */
+            
+         var alertPopup = $ionicPopup.alert({
+           title: 'Error',
+           template: 'Unable to detect your current location. Open your GPS'
+         });
    	});
 
   var successCallback = function(response){
-    console.log(response);
 
     /* Append the new stores to the original array stores. */
     $scope.search.stores = $scope.search.stores.concat(response.data.stores);
@@ -27,17 +32,32 @@ angular.module('BestBuy')
     results.numOfStores = response.data.total;
     results.currentPage = response.data.currentPage;
 
+    if(response.data.stores.length == 0){
+
+      $scope.search.stores = [];
+         var alertPopup = $ionicPopup.alert({
+           title: 'Error',
+           template: 'No Stores found in this City. Make sure it is in US.'
+         });
+    }
+    
     $scope.$broadcast('scroll.infiniteScrollComplete');
   };
 
   var errorCallback = function(response){
-    console.log("inside BestBuyAPI Search errorCallback");
     console.log(response);
+      $scope.search.stores = [];
+         var alertPopup = $ionicPopup.alert({
+           title: 'Error',
+           template: 'Could not execute get stores request.'
+         });
+      
   };
 
-  /* Get closest stores to the current location */
-  StoreFinderAPI.getClosestByZipcode(successCallback, errorCallback);
-   
+  /* Get closest stores to the specific zipcode location */
+  //StoreFinderAPI.getClosestByZipcode(successCallback, errorCallback);
+  
+
   $scope.search = 
   {
     query    : '',

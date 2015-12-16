@@ -9,7 +9,7 @@ angular.module('BestBuy')
 		appendNewMsg: function (newLogMsg) {
 			var logs = JSON.parse(localStorage.getItem(KEY)) || [];
 			logs.push(newLogMsg);
-			console.log(logs);
+			
 			localStorage.setItem(KEY, JSON.stringify(logs));
 
 		},
@@ -36,24 +36,24 @@ angular.module('BestBuy')
       // Prepend timestamp
       args[0] = [time , ': ', args[0]].join('');
 
-      var callback = function(stackframes) {
-        var stringifiedStack = stackframes.map(function(sf) {
-          return sf.toString();
-        }).join('\n');
+      // var callback = function(stackframes) {
+      //   var stringifiedStack = stackframes.map(function(sf) {
+      //     return sf.toString();
+      //   }).join('\n');
 
-        args[0] = [ args[0], stringifiedStack ].join('\n**************************************\n');
+      //   args[0] = [ args[0], stringifiedStack ].join('\n**************************************\n');
 
-	      Logger.appendNewMsg({
-	      	'time'		  : time,
-	      	'msg' 		  : originalMsg,
-	      	'callstack' : stringifiedStack
-	      });
+	     //  Logger.appendNewMsg({
+	     //  	'time'		  : time,
+	     //  	'msg' 		  : originalMsg,
+	     //  	'callstack' : stringifiedStack
+	     //  });
 
-      };
+      // };
 
-       var errback = function(err) { };
+      //  var errback = function(err) { };
 
-       StackTrace.get().then(callback).catch(errback);
+      //  StackTrace.get().then(callback).catch(errback);
       
       // Logger.appendNewMsg({
       // 	'time'		  : time,

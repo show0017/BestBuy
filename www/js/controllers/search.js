@@ -1,6 +1,6 @@
 angular.module('BestBuy')
 
-.controller('SearchCtrl', ['$scope','SearchAPI','$ionicSlideBoxDelegate',function($scope, SearchAPI, $ionicSlideBoxDelegate) {
+.controller('SearchCtrl', ['$scope','SearchAPI','$ionicSlideBoxDelegate','$ionicPopup',function($scope, SearchAPI, $ionicSlideBoxDelegate, $ionicPopup) {
 
   $scope.search = 
   {
@@ -28,12 +28,24 @@ angular.module('BestBuy')
     results.numOfPages = response.data.totalPages;
     results.numOfProducts = response.data.total;
     results.currentPage = response.data.currentPage;
+    
+    if(response.data.products.length == 0 ){
+      $scope.search.products = [];
+         var alertPopup = $ionicPopup.alert({
+           title: 'No Item Found',
+           template: 'Try different keyword to search for'
+         });
+      }
   };
 
   var errorCallback = function(response){
-    console.log("inside BestBuyAPI Search errorCallback");
-    console.log(response);
+      $scope.search.products = [];
+         var alertPopup = $ionicPopup.alert({
+           title: 'Error',
+           template: 'Could not execute your search query. Try again later.'
+         });
   };
+
 
   $scope.searchUserInput = function(){
 

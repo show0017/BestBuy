@@ -61,7 +61,7 @@ angular.module('BestBuy')
                                 ")"+
                                 SEARCH_POSTFIX;
 
-      $http.get().then(successCallback, errorCallback);      
+      $http.get(CURRENT_SEARCH_QUERY).then(successCallback, errorCallback);      
     },
 
     getClosestByZipcode: function(successCallback, errorCallback, zipcode){
