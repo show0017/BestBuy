@@ -1,7 +1,7 @@
 angular.module('BestBuy')
 
-.controller('LoginCtrl', ['$scope', '$cordovaOauth','$http','$ionicPopup','$state','$log','$rootScope',
-  function($scope, $cordovaOauth, $http, $ionicPopup, $state, $log, $rootScope){
+.controller('LoginCtrl', ['$scope', '$cordovaOauth','$http','$ionicPopup','$state','$log',
+  function($scope, $cordovaOauth, $http, $ionicPopup, $state, $log){
     $scope.user = 
     {
       'name':"",
@@ -17,14 +17,13 @@ angular.module('BestBuy')
 
     $scope.isInvalidForm = true;
     $scope.onLogin = function(){
-      console.log("broadcast event");
       $scope.$emit("event-login-success",$scope.user.name);
     };
 
     $scope.verifyUsername = function(){
 
       /* If the username is empty or is set to Guest, consider both as error cases.*/
-      if( ($scope.user.name == "") || $scope.user.name.toLowerCase() == "guest"){
+      if( (!$scope.user.name) || $scope.user.name.toLowerCase() === "guest"){
         
         $scope.error.isActive = true;
         $scope.error.usernameMsg = "Invalid username";
@@ -39,7 +38,7 @@ angular.module('BestBuy')
 
         /* The Login button should be disabled if the password input is empty OR
          * if the password error message is not empty*/
-        $scope.isInvalidForm = ($scope.user.password == "") || ($scope.error.passwordMsg != "") ;     
+        $scope.isInvalidForm = ($scope.user.password === "") || ($scope.error.passwordMsg !== "") ;   
       }     
     };
 
@@ -59,18 +58,15 @@ angular.module('BestBuy')
 
         /* The Login button should be disabled if the username input is empty OR
          * if the username error message is not empty*/
-        $scope.isInvalidForm = ($scope.user.name == "") || ($scope.error.usernameMsg != "");
+        $scope.isInvalidForm = ($scope.user.name === "") || ($scope.error.usernameMsg !== "");
       }
       
              
     };
 
     $scope.facebookLogin = function() {
-      console.log("inside facebookLogin");
       $cordovaOauth.facebook("182455115434881", ["email"])
       .then(function(result) {
-        console.log(JSON.stringify(result));
-
         $http.get("https://graph.facebook.com/v2.5/me", 
                   { params: { access_token: result.access_token, fields: "id,name,gender,location,website,picture,relationship_status", format: "json" }})
         .then(function(result) {
@@ -79,10 +75,9 @@ angular.module('BestBuy')
           content: 'You have successfully logged in!' + JSON.stringify(result.data)
           }).then(function(){
             $scope.$emit("event-login-success",result.data.name);
-          })
+          });
         }, function(error) {
-          alert("There was a problem getting your profile. Check the logs for details.");
-          console.log(error);
+          $log.error("There was a problem getting your profile. Check the logs for details."+ error);
           
         });
       })
@@ -90,7 +85,7 @@ angular.module('BestBuy')
         $ionicPopup.alert({
         title: 'Error',
         content: response.data ? response.data || response.data.message : response
-        })
+        });
       });  
     };
 }]);

@@ -31,7 +31,7 @@ angular.module('BestBuy', ['ionic','ngCordova'])
   });
 }])
 
-.config(['$stateProvider','$urlRouterProvider','$provide',function($stateProvider, $urlRouterProvider, $provide) {
+.config(['$stateProvider','$urlRouterProvider',function($stateProvider, $urlRouterProvider) {
 
 
 

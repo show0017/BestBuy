@@ -5,10 +5,6 @@ angular.module('BestBuy')
   var API_KEY = "e47jhn2cbpaehzqf7n8jdazc";
 
   var SEARCH_PREFIX  = "http://api.bestbuy.com/v1/stores(";
-  // var SEARCH_CITY_PREFIX = "http://api.bestbuy.com/v1/stores(city=";
-
-  var SEARCH_PREFIX;
-  var SEARCH_POSTFIX;
 
   var SEARCH_POSTFIX =     ")?format=json&show=storeId,name,detailedHours,phone,address&apiKey="+ API_KEY;
   // var SEARCH_CITY_POSTFIX= ")?format=json&show=storeId,name,detailedHours,phone,address&apiKey="+ API_KEY; 

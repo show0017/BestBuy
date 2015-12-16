@@ -1,6 +1,6 @@
 angular.module('BestBuy')
 
-.controller('StoreFinderCtrl', ['$scope','$cordovaGeolocation','StoreFinderAPI','$ionicPopup','$ionicLoading',function($scope, $cordovaGeolocation, StoreFinderAPI, $ionicPopup, $ionicLoading) {
+.controller('StoreFinderCtrl', ['$scope','$cordovaGeolocation','StoreFinderAPI','$ionicPopup','$ionicLoading','$log',function($scope, $cordovaGeolocation, StoreFinderAPI, $ionicPopup, $ionicLoading, $log) {
 
   $ionicLoading.show({
     template: '<ion-spinner icon="ios" class="spinner-positive"></ion-spinner>'
@@ -16,8 +16,9 @@ angular.module('BestBuy')
       /* Use maximum value of radius to get US stores with respect to Ottawa location. */
       StoreFinderAPI.getClosestByGeoLocation(successCallback, errorCallback, 2147483647);
     }, function(err) {
+        $log.error("Failed to get user's current location."+ err);
         $ionicLoading.hide();
-          var alertPopup = $ionicPopup.alert({
+        $ionicPopup.alert({
            title: 'Error',
            template: 'Unable to detect your current location. Open your GPS'
          });
@@ -37,10 +38,10 @@ angular.module('BestBuy')
     results.numOfStores = response.data.total;
     results.currentPage = response.data.currentPage;
 
-    if(response.data.stores.length == 0){
+    if(response.data.stores.length === 0){
 
       $scope.search.stores = [];
-         var alertPopup = $ionicPopup.alert({
+        $ionicPopup.alert({
            title: 'Error',
            template: 'No Stores found in this City. Make sure it is in US.'
          });
@@ -50,9 +51,10 @@ angular.module('BestBuy')
   };
 
   var errorCallback = function(response){
+      $log.error("Failed to communicate with StoreFinderAPI"+ response);
       $ionicLoading.hide();
       $scope.search.stores = [];
-         var alertPopup = $ionicPopup.alert({
+      $ionicPopup.alert({
            title: 'Error',
            template: 'Could not execute get stores request.'
          });
@@ -78,7 +80,7 @@ angular.module('BestBuy')
 
   $scope.searchUserInput = function(){
 
-    if($scope.search.query == ""){
+    if(!$scope.search.query){
       /* TODO: Display error feedback to the user that the input is empty.*/
     }else{
     	 /* Reset stores (if any)*/

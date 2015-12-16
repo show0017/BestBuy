@@ -5,19 +5,19 @@ angular.module('BestBuy')
 	var KEY = "show0017-errors";
 
 	return{
-
+    /* There was circular dependency, if I inject $rootScope in the service or the decorator.
+     * As a workaround, I am gonna use ng-local-storage to watch for changes. */
 		appendNewMsg: function (newLogMsg) {
-			var logs = JSON.parse(localStorage.getItem(KEY)) || [];
+			var logs = JSON.parse(window.localStorage.getItem(KEY)) || [];
 			logs.push(newLogMsg);
 			
-			localStorage.setItem(KEY, JSON.stringify(logs));
-
+			window.localStorage.setItem(KEY, JSON.stringify(logs));
 		},
 
 		allMsgs: function(){
-			return JSON.parse(localStorage.getItem(KEY)|| []);
+			return JSON.parse(window.localStorage.getItem(KEY)|| []);
 		}
-	}
+	};
 }])
 
 .decorator( '$log', [ '$delegate','Logger',function($delegate, Logger){
@@ -36,24 +36,24 @@ angular.module('BestBuy')
       // Prepend timestamp
       args[0] = [time , ': ', args[0]].join('');
 
-      // var callback = function(stackframes) {
-      //   var stringifiedStack = stackframes.map(function(sf) {
-      //     return sf.toString();
-      //   }).join('\n');
+      var callback = function(stackframes) {
+        var stringifiedStack = stackframes.map(function(sf) {
+          return sf.toString();
+        }).join('\n');
 
-      //   args[0] = [ args[0], stringifiedStack ].join('\n**************************************\n');
+        args[0] = [ args[0], stringifiedStack ].join('\n**************************************\n');
 
-	     //  Logger.appendNewMsg({
-	     //  	'time'		  : time,
-	     //  	'msg' 		  : originalMsg,
-	     //  	'callstack' : stringifiedStack
-	     //  });
+	      Logger.appendNewMsg({
+	      	'time'		  : time,
+	      	'msg' 		  : originalMsg,
+	      	'callstack' : stringifiedStack
+	      });
 
-      // };
+      };
 
-      //  var errback = function(err) { };
+       //var errback = function() { };
 
-      //  StackTrace.get().then(callback).catch(errback);
+       window.StackTrace.get().then(callback);
       
       // Logger.appendNewMsg({
       // 	'time'		  : time,

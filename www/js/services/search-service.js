@@ -6,7 +6,6 @@ angular.module('BestBuy')
   var SEARCH_PREFIX  = "http://api.bestbuy.com/v1/products((search=";
   var SEARCH_POSTFIX = "))?show=name,sku,salePrice,image&format=json&apiKey="+ API_KEY; 
   var PAGE_QUERY     = "&page=";
-  var products       = [];
   var currentQuery   = "";
 
   return {

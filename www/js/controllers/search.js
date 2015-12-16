@@ -1,6 +1,6 @@
 angular.module('BestBuy')
 
-.controller('SearchCtrl', ['$scope','SearchAPI','$ionicSlideBoxDelegate','$ionicPopup','$ionicLoading',function($scope, SearchAPI, $ionicSlideBoxDelegate, $ionicPopup, $ionicLoading) {
+.controller('SearchCtrl', ['$scope','SearchAPI','$ionicSlideBoxDelegate','$ionicPopup','$ionicLoading','$log',function($scope, SearchAPI, $ionicSlideBoxDelegate, $ionicPopup, $ionicLoading, $log) {
 
   $scope.search = 
   {
@@ -29,9 +29,9 @@ angular.module('BestBuy')
     results.numOfProducts = response.data.total;
     results.currentPage = response.data.currentPage;
     
-    if(response.data.products.length == 0 ){
+    if(response.data.products.length === 0 ){
       $scope.search.products = [];
-         var alertPopup = $ionicPopup.alert({
+        $ionicPopup.alert({
            title: 'No Item Found',
            template: 'Try different keyword to search for'
          });
@@ -39,9 +39,10 @@ angular.module('BestBuy')
   };
 
   var errorCallback = function(response){
+      $log.error("Error while communicating with SearchAPI "+ response);
       $ionicLoading.hide();
       $scope.search.products = [];
-         var alertPopup = $ionicPopup.alert({
+        $ionicPopup.alert({
            title: 'Error',
            template: 'Could not execute your search query. Try again later.'
          });
@@ -50,7 +51,7 @@ angular.module('BestBuy')
 
   $scope.searchUserInput = function(){
 
-    if($scope.search.query == ""){
+    if(!$scope.search.query){
       /* TODO: Display error feedback to the user that the input is empty.*/
     }else{
       SearchAPI.search($scope.search.query, successCallback, errorCallback);
@@ -68,6 +69,6 @@ angular.module('BestBuy')
 
     /* Slide to the indicated index. */
     $ionicSlideBoxDelegate.slide($index);
-  }
+  };
 
 }]);
