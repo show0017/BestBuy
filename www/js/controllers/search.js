@@ -1,6 +1,6 @@
 angular.module('BestBuy')
 
-.controller('SearchCtrl', ['$scope','SearchAPI','$ionicSlideBoxDelegate','$ionicPopup',function($scope, SearchAPI, $ionicSlideBoxDelegate, $ionicPopup) {
+.controller('SearchCtrl', ['$scope','SearchAPI','$ionicSlideBoxDelegate','$ionicPopup','$ionicLoading',function($scope, SearchAPI, $ionicSlideBoxDelegate, $ionicPopup, $ionicLoading) {
 
   $scope.search = 
   {
@@ -16,7 +16,7 @@ angular.module('BestBuy')
   };
 
   var successCallback = function(response){
-    console.log(response);
+    $ionicLoading.hide();
 
     /* Append the new products to the original array products. */
     $scope.search.products = $scope.search.products.concat(response.data.products);
@@ -39,6 +39,7 @@ angular.module('BestBuy')
   };
 
   var errorCallback = function(response){
+      $ionicLoading.hide();
       $scope.search.products = [];
          var alertPopup = $ionicPopup.alert({
            title: 'Error',

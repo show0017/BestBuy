@@ -1,6 +1,10 @@
 angular.module('BestBuy')
 
-.controller('StoreFinderCtrl', ['$scope','$cordovaGeolocation','StoreFinderAPI','$ionicPopup',function($scope, $cordovaGeolocation, StoreFinderAPI, $ionicPopup) {
+.controller('StoreFinderCtrl', ['$scope','$cordovaGeolocation','StoreFinderAPI','$ionicPopup','$ionicLoading',function($scope, $cordovaGeolocation, StoreFinderAPI, $ionicPopup, $ionicLoading) {
+
+  $ionicLoading.show({
+    template: '<ion-spinner icon="ios" class="spinner-positive"></ion-spinner>'
+  });
 
 	/* Get user's current location. */
 	var posOptions = {timeout: 10000, enableHighAccuracy: false};
@@ -12,14 +16,15 @@ angular.module('BestBuy')
       /* Use maximum value of radius to get US stores with respect to Ottawa location. */
       StoreFinderAPI.getClosestByGeoLocation(successCallback, errorCallback, 2147483647);
     }, function(err) {
-            
-         var alertPopup = $ionicPopup.alert({
+        $ionicLoading.hide();
+          var alertPopup = $ionicPopup.alert({
            title: 'Error',
            template: 'Unable to detect your current location. Open your GPS'
          });
    	});
 
   var successCallback = function(response){
+    $ionicLoading.hide();
 
     /* Append the new stores to the original array stores. */
     $scope.search.stores = $scope.search.stores.concat(response.data.stores);
@@ -45,7 +50,7 @@ angular.module('BestBuy')
   };
 
   var errorCallback = function(response){
-    console.log(response);
+      $ionicLoading.hide();
       $scope.search.stores = [];
          var alertPopup = $ionicPopup.alert({
            title: 'Error',
@@ -72,8 +77,6 @@ angular.module('BestBuy')
   };  
 
   $scope.searchUserInput = function(){
-  	console.log("inside searchUserInput");
-  	console.log($scope.search.query);
 
     if($scope.search.query == ""){
       /* TODO: Display error feedback to the user that the input is empty.*/

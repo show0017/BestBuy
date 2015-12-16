@@ -1,6 +1,6 @@
 angular.module('BestBuy')
 
-.factory('StoreFinderAPI', ['$http','$filter',function($http, $filter) {
+.factory('StoreFinderAPI', ['$http','$filter','$ionicLoading',function($http, $filter, $ionicLoading) {
 
   var API_KEY = "e47jhn2cbpaehzqf7n8jdazc";
 
@@ -35,7 +35,10 @@ angular.module('BestBuy')
     },
 
     getItemsAtPage: function(pageNum, successCallback, errorCallback) {
-      $http.get(CURRENT_SEARCH_QUERY+PAGE_QUERY+pageNum).then(successCallback, errorCallback);  
+      $http.get(CURRENT_SEARCH_QUERY+PAGE_QUERY+pageNum).then(successCallback, errorCallback);
+      $ionicLoading.show({
+        template: '<ion-spinner icon="ios" class="spinner-positive"></ion-spinner>'
+      });        
     },
 
     searchByCity: function(query, successCallback, errorCallback){
@@ -48,6 +51,9 @@ angular.module('BestBuy')
                                 SEARCH_POSTFIX;
 
       $http.get(CURRENT_SEARCH_QUERY).then(successCallback, errorCallback);      
+      $ionicLoading.show({
+        template: '<ion-spinner icon="ios" class="spinner-positive"></ion-spinner>'
+      });      
     },
 
     getClosestByGeoLocation: function(successCallback, errorCallback, minimumDistance){
@@ -61,7 +67,7 @@ angular.module('BestBuy')
                                 ")"+
                                 SEARCH_POSTFIX;
 
-      $http.get(CURRENT_SEARCH_QUERY).then(successCallback, errorCallback);      
+      $http.get(CURRENT_SEARCH_QUERY).then(successCallback, errorCallback);           
     },
 
     getClosestByZipcode: function(successCallback, errorCallback, zipcode){
@@ -75,7 +81,10 @@ angular.module('BestBuy')
                                 ")"+
                                 SEARCH_POSTFIX;
 
-      $http.get(CURRENT_SEARCH_QUERY).then(successCallback, errorCallback);      
+      $http.get(CURRENT_SEARCH_QUERY).then(successCallback, errorCallback);
+      $ionicLoading.show({
+        template: '<ion-spinner icon="ios" class="spinner-positive"></ion-spinner>'
+      });            
     },
 
     setStores: function(stores){

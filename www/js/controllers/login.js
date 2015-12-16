@@ -72,13 +72,14 @@ angular.module('BestBuy')
         console.log(JSON.stringify(result));
 
         $http.get("https://graph.facebook.com/v2.5/me", 
-        { params: { access_token: result.access_token, fields: "id,name,gender,location,website,picture,relationship_status", format: "json" }}).then(function(result) {
-        $ionicPopup.alert({
-        title: 'Success',
-        content: 'You have successfully logged in!' + JSON.stringify(result.data)
-        }).then(function(){
-          $scope.$emit("event-login-success",result.data.name);
-        })
+                  { params: { access_token: result.access_token, fields: "id,name,gender,location,website,picture,relationship_status", format: "json" }})
+        .then(function(result) {
+          $ionicPopup.alert({
+          title: 'Success',
+          content: 'You have successfully logged in!' + JSON.stringify(result.data)
+          }).then(function(){
+            $scope.$emit("event-login-success",result.data.name);
+          })
         }, function(error) {
           alert("There was a problem getting your profile. Check the logs for details.");
           console.log(error);
