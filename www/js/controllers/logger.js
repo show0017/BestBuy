@@ -1,6 +1,6 @@
 angular.module('BestBuy')
 
-.controller('LogsCtrl', ['$scope', 'Logger',function($scope, Logger){
+.controller('LogsCtrl', ['$scope', 'Logger','$interval',function($scope, Logger, $interval){
 	
 	$scope.messages = Logger.allMsgs();
 	$scope.stackframes = ["Select log message to display call stack"];
@@ -9,5 +9,9 @@ angular.module('BestBuy')
 		console.log("inside displayCallStack");
 		$scope.stackframes = $scope.messages[$index].callstack.split("\n");
 	};
+
+	$interval(function(){
+		$scope.messages = Logger.allMsgs();
+	}, 1000);
 
 }]);
