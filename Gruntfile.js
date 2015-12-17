@@ -95,8 +95,10 @@ module.exports = function(grunt) {
         expand: true, flatten: true
       },
       html:{
-        src:['www/index.html', 'www/templates/**/*.html'],
-        dest: 'dist/'
+        files: [
+          {src: ['www/index.html']    , dest: 'dist/index.html'},
+          {src: ['www/templates/**/*.html']  , dest: 'dist/templates/', expand: true, flatten: true},
+        ]
       }
     },
     cordovacli: {
@@ -105,7 +107,7 @@ module.exports = function(grunt) {
       },
       cordova: {
         options: {
-          command: ['build'],
+          command: ['platform','build'],
           platforms: ['android', 'ios'],
           path: 'plugins'
         }
